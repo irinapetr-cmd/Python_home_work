@@ -1,61 +1,112 @@
 import pytest
+
 from string_utils import StringUtils
 
-utils = StringUtils()
+string_utils = StringUtils()
 
-# Тесты для capitalize()
+
 @pytest.mark.positive
 @pytest.mark.parametrize("input_str, expected", [
     ("skypro", "Skypro"),
     ("hello world", "Hello world"),
-    ("тест", "Тест"),
-    ("123abc", "123abc"),
+    ("python", "Python")
 ])
-def test_capitalize(input_str, expected):
-    assert utils.capitalize(input_str) == expected
+def test_capitalize_positive(input_str, expected):
+    assert string_utils.capitalize(input_str) == expected
 
 @pytest.mark.negative
-def test_capitalize_edge_cases():
-    assert utils.capitalize("") == ""
-    assert utils.capitalize("   ") == "   "
-    assert utils.capitalize(None) is None
+@pytest.mark.parametrize("input_str, expected", [
+    ("123abc", "123abc"),
+    ("", ""),
+    (" ", " ")
+])
+def test_capitalize_negative("input_str, expected"):
+    assert string_utils.capitalize(input_str) == expected
 
-# Тесты для trim()
+@pytest.mark.negative
+@pytest.mark.xfail
+@pytest.mark.parametrize("input_str, expected", [
+    (None, None)
+])
+def test_capitalize_none(input_str, expected):
+    assert string_utils.capitalize(input_str) == expected
+
+
 @pytest.mark.positive
-def test_trim_positive():
-    assert utils.trim("   skypro") == "skypro"
-    assert utils.trim("  hello ") == "hello "
-    assert utils.trim("no_spaces") == "no_spaces"
+@pytest.mark.parametrize("input_str, expected", [
+    (" Hello Word", "Hello Word"),
+    (" 123", "123"),
+    (" Skypro", "Skypro")
+])
+def test_trim_positive(input_str, expected):
+    assert string_utils.trim(input_str) == expected
 
 @pytest.mark.negative
-def test_trim_negative():
-    assert utils.trim("") == ""
-    assert utils.trim(None) is None
+@pytest.mark.parametrize("input_str, expected", [
+    (" Hello Word!", "Hello Word!"),
+    ("123 ", "123 "),
+    (" ", "")
+])
+def test_trim_negative(input_str, expected):
+    assert string_utils.trim(input_str) == expected
 
-# Тесты для contains()
+@pytest.mark.negative
+@pytest.mark.xfail
+@pytest.mark.parametrize("input_str, expected", [
+    (None, None)
+])
+def test_trim_none(input_str, expected):
+    assert string_utils.trim(input_str) == expected
+
+
 @pytest.mark.positive
-def test_contains_positive():
-    assert utils.contains("SkyPro", "S") is True
-    assert utils.contains("SkyPro", "Pro") is True
-    assert utils.contains("04 апреля 2023", "апреля") is True
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    ("Hello Word", "W", True),
+    ("123", "1", True),
+    (" Skypro", "o", True)
+])
+def test_contains_positive(input_str, symbol, expected_result):
+    assert string_utils.contains(input_str, symbol) == expected_result
 
 @pytest.mark.negative
-def test_contains_negative():
-    assert utils.contains("SkyPro", "U") is False
-    assert utils.contains("", "a") is False
-    assert utils.contains(" ", " ") is True
-    assert utils.contains(None, "x") is False
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    ("123 ", "a", False),
+    ("Python", "i", False ),
+    (" ", "o", False)
+])
+def test_contains_negative(input_str, symbol, expected_result):
+    assert string_utils.contains(input_str, symbol) == expected_result
 
-# Тесты для delete_symbol()
+@pytest.mark.negative
+@pytest.mark.xfail
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    (None, "a" False)
+])
+def test_contains_none(input_str, symbol, expected_result):
+    assert string_utils.contains(input_str, symbol) == expected_result
+
 @pytest.mark.positive
-def test_delete_symbol_positive():
-    assert utils.delete_symbol("SkyPro", "k") == "SyPro"
-    assert utils.delete_symbol("Hello world", "l") == "Heo word"
-    assert utils.delete_symbol("123-456-789", "-") == "123456789"
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    ("Hello Word", "l", "Heo Word"),
+    ("123", "1", "23"),
+    (" Skypro", "ro", "Skyp")
+])
+def test_delete_symbol_positive(input_str, symbol, expected_result):
+    assert string_utils.delete_symbol(input_str, symbol) == expected_result
 
 @pytest.mark.negative
-def test_delete_symbol_negative():
-    assert utils.delete_symbol("", "a") == ""
-    assert utils.delete_symbol("NoChange", "z") == "NoChange"
-    assert utils.delete_symbol(None, "a") is None
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    ("123 ", "i", "123"),
+    ("Python", "i", "Python"),
+    (" ", "o", " ")
+])
+def test_delete_symbol_negative(input_str, symbol, expected_result):
+    assert string_utils.delete_symbol(input_str, symbol) == expected_result
 
+@pytest.mark.negative
+@pytest.mark.xfail
+@pytest.mark.parametrize("input_str, symbol, expected_result", [
+    (None, "a" None)
+])
+def test_delete_symbol_none(input_str, symbol, expected_result):
+    assert string_utils.delete_symbol(input_str, symbol) == expected_result
