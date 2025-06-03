@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
@@ -18,11 +17,11 @@ input_pass = driver.find_element(By.CSS_SELECTOR, "#password")
 input_pass.send_keys("SuperSecretPassword!")
 sleep(10)
 
-login_button - driver.find_element(By.CSS_SELECTOR, "button.radius")
+login_button = driver.find_element(By.CSS_SELECTOR, "button.radius")
 login_button.click()
 sleep(10)
 
-success_message -  driver.find_element(By.CSS_SELECTOR, ".flash.success")
+success_message =  driver.find_element(By.CSS_SELECTOR, ".flash.success")
 print(success_message.text)
 
 driver.quit()
